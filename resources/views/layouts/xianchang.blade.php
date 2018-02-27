@@ -15,7 +15,7 @@
     <a class="g-f-r logout" href="/">退出</a>
 </div>
 <div id="container">
-    
+    @yield('content')
 </div>
 <div id="ft">
     2008-{{date('Y')}}&nbsp;&copy;&nbsp;www.jiehun.com.cn
