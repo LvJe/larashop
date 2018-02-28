@@ -15,3 +15,4 @@ Route::get('/', function () {
     return view('admin/layouts/xianchang');
 });
 Route::resource('admin/category','Admin\CategoryController');
+Route::resource('admin/goods','Admin\GoodsController');
