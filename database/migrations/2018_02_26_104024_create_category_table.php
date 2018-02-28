@@ -23,7 +23,7 @@ class CreateCategoryTable extends Migration
             $table->string('template_file',50)->default('');
             $table->string('measure_unit',15)->default('');
             $table->tinyInteger('show_in_nav')->default(0);
-            $table->string('style',150);
+            $table->string('style',150)->default('');
             $table->unsignedTinyInteger('is_show')->default(1);
             $table->tinyInteger('grade')->default(0);
             $table->string('filter_attr',255)->default(0);

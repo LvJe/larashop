@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\models\CategoryModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class CategoryController extends Controller
 {
@@ -13,8 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-        return view('category/index');
+        return view('category/index',['categories'=>CategoryModel::all()]);
     }
 
     /**
@@ -36,7 +37,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        var_dump($request->all());
+        $inputs = $this->formInputs($request);
+        CategoryModel::create($inputs);
+        return view('common/jump_page',['msg'=>'成功 返回','url'=>'/category','url_label'=>'分类列表']);
     }
 
     /**
@@ -45,9 +48,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(CategoryModel $category)
     {
-        //
+        return view('category/category_form',['cat'=>$category]);
     }
 
     /**
@@ -56,9 +59,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(CategoryModel $category)
     {
-        //
+        return view('category/category_form',['cat'=>$category]);
     }
 
     /**
@@ -70,7 +73,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inputs = $this->formInputs($request);
+        CategoryModel::where('cat_id',$id)->update($inputs);
+        return view('common/jump_page',['msg'=>'成功 返回','url'=>'/category','url_label'=>'分类列表']);
     }
 
     /**
@@ -81,6 +86,19 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        CategoryModel::destroy($id);
+        return view('common/jump_page',['msg'=>'成功删除 返回','url'=>'/category','url_label'=>'分类列表']);
+    }
+
+    private function formInputs(Request $request){
+        $input_fields = ['cat_name','parent_id','measure_unit','sort_order','is_show','show_in_nav','keywords','cat_desc'];
+        $inputs = $request->only($input_fields);
+        //待：写成中间件
+        foreach ($input_fields as $v) {
+            if ($inputs[$v] == null) {
+                $inputs[$v] = '';
+            }
+        }
+        return $inputs;
     }
 }
