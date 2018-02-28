@@ -12,6 +12,6 @@
 */
 
 Route::get('/', function () {
-    return view('/layouts/xianchang');
+    return view('admin/layouts/xianchang');
 });
-Route::resource('category','CategoryController');
+Route::resource('admin/category','Admin\CategoryController');

@@ -1,4 +1,4 @@
-@extends('layouts.xianchang')
+@extends('admin.layouts.xianchang')
 
 @section('content')
     <!-- start add new category form -->
