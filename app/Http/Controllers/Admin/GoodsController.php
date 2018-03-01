@@ -25,7 +25,7 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/goods/goods_form');
     }
 
     /**
@@ -36,7 +36,9 @@ class GoodsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $inputs = $request->all();
+        Goods::create($inputs);
+        return view('admin/common/jump_page',['msg'=>'成功删除 返回','url'=>route('goods.index'),'url_label'=>'商品列表']);
     }
 
     /**
@@ -45,9 +47,9 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function show(Goods $goods)
+    public function show($id)
     {
-        //
+        return $this->edit($id);
     }
 
     /**
@@ -56,9 +58,10 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function edit(Goods $goods)
+    public function edit($id)
     {
-        //
+        $goods = Goods::Find($id);
+        return view('admin/goods/goods_form',['goods'=>$goods]);
     }
 
     /**
@@ -68,9 +71,11 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Goods $goods)
+    public function update(Request $request, $id)
     {
-        //
+        $inputs = $this->formInputs($request);
+        Goods::where('goods_id',$id)->update($inputs);
+        return view('admin/common/jump_page',['msg'=>'成功 返回','url'=>route('goods.index'),'url_label'=>'商品列表']);
     }
 
     /**
@@ -79,8 +84,16 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Goods $goods)
+    public function destroy($id)
     {
-        //
+        Goods::destroy($id);
+        return view('admin/common/jump_page',['msg'=>'删除成功 返回','url'=>route('goods.index'),'url_label'=>'商品列表']);
+
+    }
+
+    private function formInputs(Request $request){
+        $inputFields = ['goods_name','goods_sn','cat_id','shop_price','goods_desc'];
+        $inputs = $request->only($inputFields);
+        return $inputs;
     }
 }
